@@ -1,8 +1,6 @@
 package org.parking.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Car{
 
@@ -11,6 +9,8 @@ public class Car{
     private static final List<String> ALLOWED_LETTERS = new ArrayList<>();
     private static final List<Byte> NUMBERS = new ArrayList<>();
     private static final List<Integer> REGIONS = new ArrayList<>();
+
+    private static Set<String> usedNumbers = new HashSet<>();
 
     private static final Random random = new Random();
 
@@ -53,18 +53,25 @@ public class Car{
     }
 
     private String generateNewNumber(){
-        String letter1 = ALLOWED_LETTERS.get(random.nextInt(ALLOWED_LETTERS.size()));
-        String letter2 = ALLOWED_LETTERS.get(random.nextInt(ALLOWED_LETTERS.size()));
-        String letter3 = ALLOWED_LETTERS.get(random.nextInt(ALLOWED_LETTERS.size()));
+        String newNumber;
+        do {
+            String letter1 = ALLOWED_LETTERS.get(random.nextInt(ALLOWED_LETTERS.size()));
+            String letter2 = ALLOWED_LETTERS.get(random.nextInt(ALLOWED_LETTERS.size()));
+            String letter3 = ALLOWED_LETTERS.get(random.nextInt(ALLOWED_LETTERS.size()));
 
-        String num1 = String.valueOf(NUMBERS.get(random.nextInt(NUMBERS.size())));
-        String num2 = String.valueOf(NUMBERS.get(random.nextInt(NUMBERS.size())));
-        String num3 = String.valueOf(NUMBERS.get(random.nextInt(NUMBERS.size())));
-        String numbers = num1 + num2 + num3;
+            String num1 = String.valueOf(NUMBERS.get(random.nextInt(NUMBERS.size())));
+            String num2 = String.valueOf(NUMBERS.get(random.nextInt(NUMBERS.size())));
+            String num3 = String.valueOf(NUMBERS.get(random.nextInt(NUMBERS.size())));
+            String numbers = num1 + num2 + num3;
 
-        int region = REGIONS.get(random.nextInt(REGIONS.size()));
+            int region = REGIONS.get(random.nextInt(REGIONS.size()));
 
-        return String.format("%s %s %s%s %d", letter1, numbers, letter2, letter3, region);
+
+            newNumber = String.format("%s %s %s%s %d", letter1, numbers, letter2, letter3, region);
+        }
+        while (usedNumbers.contains(newNumber));
+
+        return newNumber;
     }
 
     public String getNumberPlate(){

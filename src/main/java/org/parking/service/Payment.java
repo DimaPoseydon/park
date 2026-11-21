@@ -5,27 +5,22 @@ import java.time.LocalDateTime;
 
 public class Payment {
     public static long payment(LocalDateTime entryTime, LocalDateTime exitTime){
-        Duration duration = Duration.between(entryTime, exitTime);
+        long seconds = Duration.between(entryTime, exitTime).toSeconds();
 
-        long totalMinutes = duration.toMinutes();
-        long totalSeconds = duration.toSeconds();
-
-        if (totalSeconds <= 20 * 60){
+        if (seconds <= 20 * 60) {
             return 0;
         }
 
-        if (totalMinutes <= 12 * 60){
-            long hours = duration.toHours();
-
-            if (duration.toMinutesPart() > 0 || duration.toSecondsPart() > 0){
+        if (seconds <= 12 * 60 * 60) {
+            long hours = seconds / 3600;
+            if (seconds % 3600 > 0) {
                 hours++;
             }
             return hours * 200;
         }
 
-        long days = duration.toDays();
-
-        if (duration.toHoursPart() > 0 || duration.toMinutesPart() > 0 || duration.toSecondsPart() > 0) {
+        long days = seconds / (24 * 60 * 60);
+        if (seconds % (24 * 60 * 60) > 0) {
             days++;
         }
         return days * 200;
